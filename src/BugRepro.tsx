@@ -14,7 +14,14 @@ export default function Entry() {
 
 function Page() {
   const [promise, setPromise] = useState<Promise<any> | null>(null);
+  /**
+   * this part is tricky, I cannot say confidently the conditional `use` is required for the reproduction.
+   * If we tried to run use(promise ?? cachedPromise) we wouldn't be able renderToString without a parent suspense boundary
+   * but with a parent suspense the bug is no longer reproducible (with or without conditional use)
+   * and without renderToString + hydration, the bug is no longer reproducible
+   */
   promise ? use(promise) : promise;
+
   useMemo(() => {}, []); // to trigger too many hooks error
   return (
     <>

@@ -24,7 +24,7 @@ function Page() {
           <Bomb />
         </ErrorBoundary>
       </Suspense>
-      ;
+      hello world
     </>
   );
 }

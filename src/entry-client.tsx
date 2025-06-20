@@ -1,24 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import ReactDOMServer from "react-dom/server";
 import BugRepro from "./BugRepro";
 
-// if pure CSR, no more too many hooks error
-const HYDRATE = true;
+const rootElement = document.getElementById("root")!;
 
-if (HYDRATE) {
-  ReactDOM.hydrateRoot(
-    document.getElementById("root")!,
-    <React.StrictMode>
-      <BugRepro />
-    </React.StrictMode>
-  );
-} else {
-  const rootElement = document.getElementById("root")!;
-  rootElement.innerHTML = "";
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(
-    <React.StrictMode>
-      <BugRepro />
-    </React.StrictMode>
-  );
-}
+const html = ReactDOMServer.renderToString(
+  <React.StrictMode>
+    <BugRepro />
+  </React.StrictMode>
+);
+
+rootElement.innerHTML = html;
+
+ReactDOM.hydrateRoot(
+  rootElement,
+  <React.StrictMode>
+    <BugRepro />
+  </React.StrictMode>
+);
